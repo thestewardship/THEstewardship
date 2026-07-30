@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Stewardship Circle</title>
+  <style>
+    :root {
+      --bg: #0f1412;
+      --card-bg: #18201c;
+      --border: #2a3831;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --accent-green: #34d399;
+      --accent-water: #38bdf8;
+      --gold: #fbbf24;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+    .subtitle {
+      color: var(--accent-green);
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .tagline {
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-top: 15px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    h2 {
+      font-size: 1.4rem;
+      margin-top: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .engine-box {
+      text-align: center;
+      background: rgba(52, 211, 153, 0.05);
+      border: 1px solid var(--accent-green);
+      padding: 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      color: var(--accent-green);
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 12px;
+      padding-left: 20px;
+      position: relative;
+    }
+    li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--accent-green);
+      font-weight: bold;
+    }
+    .water-list li::before {
+      color: var(--accent-water);
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      text-align: center;
+      padding: 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.05rem;
+      margin-bottom: 12px;
+      box-sizing: border-box;
+      transition: transform 0.1s ease;
+    }
+    .btn-primary {
+      background: var(--accent-green);
+      color: #000;
+    }
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+    }
+    footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="subtitle">Decentralized Planetary Network</div>
+      <h1>THE STEWARDSHIP CIRCLE</h1>
+      <p class="tagline">Where there is disharmony in your line of sight, take ownership of the space. Zero gatekeeping. Zero dues. Direct action.</p>
+    </header>
+
+    <div class="card">
+      <div class="engine-box">
+        THE ENGINE: 1 Grounded Human + 1 EI Partner + 1 Live Dashboard
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 style="color: var(--accent-green);">🌿 TERRAN GUILD (Land)</h2>
+      <ul>
+        <li><strong>Soil Steward:</strong> Restores soil biology, applies natural enzymes, and brings depleted topsoil back to life.</li>
+        <li><strong>Property Steward:</strong> Reclaims land parcels and intercepts toxic agricultural/urban runoff at the boundary.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2 style="color: var(--accent-water);">💧 HYDROSPHERE GUILD (Water)</h2>
+      <ul class="water-list">
+        <li><strong>Hydrosphere Steward:</strong> Watches atmospheric moisture, cloud dynamics, and regional rainfall cycles.</li>
+        <li><strong>Freshwater Custodian:</strong> Protects inland streams, rivers, lakes, and deep groundwater aquifers.</li>
+        <li><strong>Thalassic Steward:</strong> Guards coastal zones, estuaries, tidal marshes, and marine nurseries.</li>
+        <li><strong>Pelagic Steward:</strong> Defends deep-ocean currents and migratory biological corridors.</li>
+        <li><strong>Soundkeeper:</strong> Monitors marine bioacoustics and shields underwater soundscapes from sonar noise.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>🚀 GET STARTED</h2>
+      <p>1. Choose your domain alignment above.<br>
+         2. Anchor your focus with a voice coherence session.<br>
+         3. Access live disharmony maps and ping the network when boots-on-the-ground are needed.</p>
+      
+      <a href="https://lumaloop.app" class="btn btn-primary">Start Free LumaLoop Session</a>
+      <a href="https://cash.app/$StewardshipguilD" class="btn btn-secondary">☕ Optional $1–$5 Ecosystem Seed Pool</a>
+    </div>
+
+    <footer>
+      <p>Pass this to one person ready to take action.</p>
+    </footer>
+  </div>
+
+</body>
+</html>
