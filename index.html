@@ -6,28 +6,25 @@
   <title>The Stewardship Circle — Control Tower & Field Telemetry Hub</title>
   <style>
     :root {
-      --bg: #0b1120;
-      --card-bg: rgba(15, 23, 42, 0.85);
-      --border: rgba(255, 255, 255, 0.08);
+      --bg: #090e1a;
+      --card-bg: rgba(15, 23, 42, 0.92);
+      --border: rgba(255, 255, 255, 0.1);
       --accent-green: #10b981;
       --accent-cyan: #06b6d4;
       --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background-color: var(--bg); color: var(--text-main); min-height: 100vh; padding: 24px; }
+    body { background-color: var(--bg); color: var(--text-main); min-height: 100vh; padding: 18px; line-height: 1.5; }
+    .container { max-width: 1040px; margin: 0 auto; }
 
     header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      padding-bottom: 24px;
+      padding-bottom: 20px;
       border-bottom: 1px solid var(--border);
       margin-bottom: 24px;
-      flex-wrap: wrap;
-      gap: 16px;
     }
 
     .badge {
@@ -44,249 +41,454 @@
       margin-bottom: 8px;
     }
 
-    h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; }
-    .subtitle { color: var(--text-muted); font-size: 14px; margin-top: 4px; }
+    h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
+    .subtitle { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
 
-    .system-status {
+    .nav-tabs {
       display: flex;
-      align-items: center;
       gap: 8px;
-      background: var(--card-bg);
-      padding: 8px 16px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      font-size: 13px;
+      margin-top: 16px;
+      overflow-x: auto;
+      padding-bottom: 4px;
     }
 
-    .status-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--accent-green);
-      box-shadow: 0 0 10px var(--accent-green);
+    .tab-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
     }
+
+    .tab-btn.active {
+      background: var(--accent-green);
+      color: #06111e;
+      border-color: var(--accent-green);
+    }
+
+    .view-panel { display: none; }
+    .view-panel.active { display: block; }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 20px;
-      margin-bottom: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 18px;
+      margin-bottom: 20px;
     }
 
     .card {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 20px;
-      backdrop-filter: blur(12px);
+      padding: 18px;
+      backdrop-filter: blur(10px);
+      margin-bottom: 18px;
     }
 
     .card h2 {
-      font-size: 15px;
-      font-weight: 600;
+      font-size: 13px;
+      font-weight: 700;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 16px;
+      letter-spacing: 0.08em;
+      margin-bottom: 14px;
       display: flex;
       justify-content: space-between;
+      align-items: center;
     }
 
-    .metric-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 12px;
-    }
-
-    .metric-value { font-size: 24px; font-weight: 700; color: var(--text-main); }
-    .metric-target { font-size: 12px; color: var(--text-muted); }
+    .metric-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+    .metric-value { font-size: 22px; font-weight: 700; }
+    .metric-target { font-size: 11px; color: var(--text-muted); }
 
     .progress-bar {
       width: 100%;
       height: 6px;
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.08);
       border-radius: 3px;
       overflow: hidden;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
-    .progress-fill {
-      height: 100%;
+    .progress-fill { height: 100%; background: var(--accent-green); border-radius: 3px; }
+
+    /* Interactive Elements */
+    button.btn-primary {
       background: var(--accent-green);
-      border-radius: 3px;
-      transition: width 0.4s ease;
+      color: #04121a;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      transition: opacity 0.2s;
     }
 
-    .log-terminal {
-      background: #050811;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      padding: 14px;
-      font-family: ui-monospace, Menlo, Monaco, monospace;
-      font-size: 12px;
-      color: #38bdf8;
-      height: 140px;
-      overflow-y: auto;
-      line-height: 1.6;
-    }
+    button.btn-primary:hover { opacity: 0.9; }
 
-    .button-group {
-      display: flex;
-      gap: 10px;
-      margin-top: 14px;
-    }
-
-    button {
-      background: rgba(255, 255, 255, 0.05);
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
       color: var(--text-main);
       border: 1px solid var(--border);
-      padding: 8px 14px;
+      padding: 6px 12px;
       border-radius: 6px;
-      font-size: 12px;
-      font-weight: 500;
+      font-size: 11px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: background 0.2s;
     }
 
-    button:hover {
-      background: var(--accent-green);
-      color: #050811;
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.15); }
+
+    textarea, select, input[type="text"] {
+      width: 100%;
+      background: #050811;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      color: var(--text-main);
+      font-size: 13px;
+      outline: none;
+      margin-bottom: 12px;
+    }
+
+    textarea:focus, select:focus, input[type="text"]:focus {
       border-color: var(--accent-green);
+    }
+
+    .result-box {
+      background: #050811;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      white-space: pre-wrap;
+    }
+
+    .tag-native {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--accent-green);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      display: inline-block;
+    }
+
+    .tag-invasive {
+      background: rgba(244, 63, 94, 0.2);
+      color: var(--accent-rose);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      display: inline-block;
+    }
+
+    .camera-viewport {
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.2);
+      margin-bottom: 12px;
+    }
+
+    #image-preview {
+      max-width: 100%;
+      max-height: 200px;
+      border-radius: 6px;
+      margin-top: 10px;
+      display: none;
     }
   </style>
 </head>
 <body>
 
+<div class="container">
   <header>
-    <div>
-      <span class="badge">Shipaton 2026 Submission</span>
-      <h1>The Stewardship Circle — Control Tower</h1>
-      <p class="subtitle">Autonomous Systems & Environmental Infrastructure Telemetry Hub</p>
-    </div>
-    <div class="system-status">
-      <span class="status-dot"></span>
-      <span>Field Telemetry Online &bull; EPA API Connected</span>
+    <span class="badge">Shipaton 2026 Submission</span>
+    <h1>The Stewardship Circle — Control Tower</h1>
+    <p class="subtitle">Autonomous Systems & Environmental Infrastructure Telemetry Hub</p>
+
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="switchTab('tab-telemetry')">Control Tower Telemetry</button>
+      <button class="tab-btn" onclick="switchTab('tab-scanner')">Snap & Assess (Plant Scanner)</button>
+      <button class="tab-btn" onclick="switchTab('tab-translator')">Lingo for a Gringo (Agency Dialect)</button>
+      <button class="tab-btn" onclick="switchTab('tab-grants')">Autonomous Grant Generator</button>
     </div>
   </header>
 
-  <div class="grid">
-    <!-- Card 1: Soil Bioremediation -->
-    <div class="card">
-      <h2>Soil Bioremediation Matrix <span>Lance Beem Guild</span></h2>
-      <div class="metric-row">
-        <div>
-          <div class="metric-value" id="som-val">4.8%</div>
-          <div class="metric-target">Soil Organic Matter (Target: 8.5%)</div>
+  <!-- TAB 1: TELEMETRY -->
+  <div id="tab-telemetry" class="view-panel active">
+    <div class="grid">
+      <!-- Soil Matrix -->
+      <div class="card">
+        <h2>Soil Bioremediation Matrix <span>Lance Beem Guild</span></h2>
+        <div class="metric-row">
+          <div>
+            <div class="metric-value">5.0%</div>
+            <div class="metric-target">Soil Organic Matter (Target: 8.5%)</div>
+          </div>
+          <span style="color: var(--accent-green); font-size: 12px; font-weight: 700;">+0.6% / cycle</span>
         </div>
-        <span style="color: var(--accent-green); font-size: 13px; font-weight: 600;">+0.6% / cycle</span>
+        <div class="progress-bar"><div class="progress-fill" style="width: 58%;"></div></div>
+        <div class="metric-row">
+          <div>
+            <div class="metric-value">6.4 pH</div>
+            <div class="metric-target">Bio-Mineral Balance</div>
+          </div>
+          <div>
+            <div class="metric-value">91%</div>
+            <div class="metric-target">Mycelial Respiration</div>
+          </div>
+        </div>
       </div>
-      <div class="progress-bar"><div class="progress-fill" style="width: 56%;"></div></div>
 
-      <div class="metric-row">
-        <div>
-          <div class="metric-value">6.4 pH</div>
-          <div class="metric-target">Bio-Mineral Balance</div>
+      <!-- Hydrology -->
+      <div class="card">
+        <h2>Hydrology & Collection <span>Catchment & Solar Array</span></h2>
+        <div class="metric-row">
+          <div>
+            <div class="metric-value">43,150 gal</div>
+            <div class="metric-target">Active Reserve (50,000 gal Capacity)</div>
+          </div>
+          <span style="color: var(--accent-cyan); font-size: 12px; font-weight: 700;">86.3%</span>
         </div>
-        <div>
-          <div class="metric-value">91%</div>
-          <div class="metric-target">Mycelial Respiration</div>
+        <div class="progress-bar"><div class="progress-fill" style="width: 86.3%; background: var(--accent-cyan);"></div></div>
+        <div class="metric-row">
+          <div>
+            <div class="metric-value">10 / 10</div>
+            <div class="metric-target">Well Manifold Units Active</div>
+          </div>
+          <div>
+            <div class="metric-value">12.4 gpm</div>
+            <div class="metric-target">Recharge Rate</div>
+          </div>
         </div>
       </div>
-      <div class="button-group">
-        <button onclick="triggerBioremediation()">Inject Micro-Nutrient Pulse</button>
-      </div>
-    </div>
 
-    <!-- Card 2: Hydrology Network -->
-    <div class="card">
-      <h2>Hydrology & Collection <span>Catchment & Solar Array</span></h2>
-      <div class="metric-row">
-        <div>
-          <div class="metric-value" id="water-val">42,800 gal</div>
-          <div class="metric-target">Active Reserve (50,000 gal Capacity)</div>
+      <!-- Facility -->
+      <div class="card">
+        <h2>Facility Nodes <span>High Tunnel & Domes</span></h2>
+        <div class="metric-row">
+          <div>
+            <div class="metric-value">21.5°C</div>
+            <div class="metric-target">24x96 Tunnel (Hydronic Loop Active)</div>
+          </div>
+          <span style="color: var(--accent-amber); font-size: 12px; font-weight: 700;">Optimal</span>
         </div>
-        <span style="color: var(--accent-cyan); font-size: 13px; font-weight: 600;">85.6%</span>
-      </div>
-      <div class="progress-bar"><div class="progress-fill" style="width: 85.6%; background: var(--accent-cyan);"></div></div>
-
-      <div class="metric-row">
-        <div>
-          <div class="metric-value">10 / 10</div>
-          <div class="metric-target">Well Manifold Units Active</div>
+        <div class="progress-bar"><div class="progress-fill" style="width: 78%; background: var(--accent-amber);"></div></div>
+        <div class="metric-row">
+          <div>
+            <div class="metric-value">72V Bus</div>
+            <div class="metric-target">Pack SOC: 96%</div>
+          </div>
+          <div>
+            <div class="metric-value">0.08 ppm</div>
+            <div class="metric-target">Atmospheric Safety</div>
+          </div>
         </div>
-        <div>
-          <div class="metric-value">12.4 gpm</div>
-          <div class="metric-target">Recharge Rate</div>
-        </div>
-      </div>
-      <div class="button-group">
-        <button onclick="cycleHydrology()">Run Purge & Recirculate</button>
-      </div>
-    </div>
-
-    <!-- Card 3: Autonomous Facility Nodes -->
-    <div class="card">
-      <h2>Facility Nodes <span>High Tunnel & Domes</span></h2>
-      <div class="metric-row">
-        <div>
-          <div class="metric-value">21.5°C</div>
-          <div class="metric-target">24x96 Tunnel (Hydronic Loop Active)</div>
-        </div>
-        <span style="color: var(--accent-amber); font-size: 13px; font-weight: 600;">Optimal</span>
-      </div>
-      <div class="progress-bar"><div class="progress-fill" style="width: 78%; background: var(--accent-amber);"></div></div>
-
-      <div class="metric-row">
-        <div>
-          <div class="metric-value">72V Bus</div>
-          <div class="metric-target">Power Storage (96% SOC)</div>
-        </div>
-        <div>
-          <div class="metric-value">0.08 ppm</div>
-          <div class="metric-target">Atmospheric Safety</div>
-        </div>
-      </div>
-      <div class="button-group">
-        <button onclick="pingNodes()">Poll Field Telemetry</button>
       </div>
     </div>
   </div>
 
-  <!-- Operational Telemetry Console -->
-  <div class="card">
-    <h2>Autonomous Field Event Log</h2>
-    <div class="log-terminal" id="terminal-log">
-      <div>[09:00:12] EPA API Gateway: Regional baseline acquired. Status Nominal.</div>
-      <div>[09:05:44] Field Sensor Mesh: Soil Moisture across Sectors 1-4 holding at 34%.</div>
-      <div>[09:12:01] Hydronic Compost Exchange: Water core temp 58°C, loop pump at 40%.</div>
-      <div>[09:18:22] Lance Beem Bioremediation formulation applied to Zone A subsoil.</div>
+  <!-- TAB 2: SNAP & ASSESS -->
+  <div id="tab-scanner" class="view-panel">
+    <div class="card">
+      <h2>Snap & Assess Field Camera <span>AI Vision Plant Classifier</span></h2>
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+        Capture a live field specimen to classify native biomass vs. invasive species, quantify soil impact, and auto-route remediation tasks.
+      </p>
+
+      <div class="camera-viewport">
+        <label for="camera-input" class="btn-primary" style="display: inline-block; width: auto; padding: 10px 20px; cursor: pointer;">
+          &#128247; Take Photo / Upload Specimen
+        </label>
+        <input id="camera-input" type="file" accept="image/*" capture="environment" style="display: none;" onchange="handleImage(this)">
+        <br>
+        <img id="image-preview" alt="Field Preview">
+      </div>
+
+      <div style="margin-bottom: 12px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+        <span style="font-size: 11px; color: var(--text-muted);">Quick Judge Presets:</span>
+        <button class="btn-secondary" onclick="runPresetScan('sassafras')">Sample: Sassafras (Native)</button>
+        <button class="btn-secondary" onclick="runPresetScan('tallow')">Sample: Chinese Tallow (Invasive)</button>
+        <button class="btn-secondary" onclick="runPresetScan('kudzu')">Sample: Kudzu (Invasive)</button>
+      </div>
+
+      <div id="scanner-result" class="result-box" style="display: none;"></div>
     </div>
   </div>
 
-  <script>
-    function addLog(msg) {
-      const log = document.getElementById('terminal-log');
-      const time = new Date().toTimeString().split(' ')[0];
-      const entry = document.createElement('div');
-      entry.innerHTML = `[${time}] ${msg}`;
-      log.appendChild(entry);
-      log.scrollTop = log.scrollHeight;
+  <!-- TAB 3: LINGO FOR A GRINGO -->
+  <div id="tab-translator" class="view-panel">
+    <div class="card">
+      <h2>Lingo for a Gringo <span>Field Notes &rarr; Agency Dialect Engine</span></h2>
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+        Translates raw field slang and scout observations into structured USDA-NRCS, EPA, and federal grant bureaucrat dialect.
+      </p>
+
+      <div style="margin-bottom: 10px; display: flex; gap: 8px; flex-wrap: wrap;">
+        <span style="font-size: 11px; color: var(--text-muted);">Test Prompts:</span>
+        <button class="btn-secondary" onclick="setTranslatorInput('Dug a ditch on the contour line and threw rotten wood and pecan chips in it so the mud won\'t wash away.')">Preset: Swale & Chips</button>
+        <button class="btn-secondary" onclick="setTranslatorInput('Sprayed Lance\'s compost brew across 5 acres of dead dirt to bring the bugs and mycelium back.')">Preset: Lance Beem Soil Pulse</button>
+        <button class="btn-secondary" onclick="setTranslatorInput('Tore down 2 acres of tallow trees and stacked them up to make biochar for the high tunnel compost heater.')">Preset: Biochar & Clearing</button>
+      </div>
+
+      <textarea id="raw-notes" rows="4" placeholder="Enter raw scout or field notes here..."></textarea>
+      <button class="btn-primary" onclick="translateDialect()">Translate to Federal Agency Dialect</button>
+
+      <div id="translator-output" class="result-box" style="margin-top: 14px; display: none;"></div>
+    </div>
+  </div>
+
+  <!-- TAB 4: AUTONOMOUS GRANT GENERATOR -->
+  <div id="tab-grants" class="view-panel">
+    <div class="card">
+      <h2>Autonomous Grant Writer <span>Federal & Sovereign Infrastructure Engine</span></h2>
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+        Synthesizes real-time field telemetry, soil organic matter benchmarks, and hydrology data into an audit-ready USDA EQIP / EPA grant narrative.
+      </p>
+
+      <label style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Select Target Grant Agency</label>
+      <select id="grant-program">
+        <option value="USDA-EQIP">USDA-NRCS Environmental Quality Incentives Program (EQIP)</option>
+        <option value="EPA-RECLAIM">EPA Region 6 Brownfield & Watershed Bioremediation Initiative</option>
+        <option value="SOVEREIGN-7GEN">Seven Generations Land Trust & Sustainable Infrastructure Endowment</option>
+      </select>
+
+      <button class="btn-primary" onclick="generateGrant()">Generate Formal Grant Narrative</button>
+
+      <div id="grant-output" class="result-box" style="margin-top: 14px; display: none;"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById(tabId).classList.add('active');
+  }
+
+  // SNAP & ASSESS
+  function handleImage(input) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const preview = document.getElementById('image-preview');
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+        runPresetScan('sassafras');
+      }
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  function runPresetScan(type) {
+    const box = document.getElementById('scanner-result');
+    box.style.display = 'block';
+
+    if (type === 'sassafras') {
+      box.innerHTML = `
+<span class="tag-native">&#10003; NATIVE KEYSTONE SPECIES</span>
+<strong>Botanical Taxonomy:</strong> Sassafras albidum (Lauraceae)
+<strong>Confidence Score:</strong> 98.4%
+<strong>Humus Contribution Potential:</strong> High (Leaf mold produces 0.8% organic topsoil accumulation/yr)
+<strong>Guild Interactions:</strong> Establishes deep taproot to fracture subsoil clay; provides canopy shelter for understory guilds.
+<strong>Field Directive:</strong> PRESERVE & ENHANCE. Tag specimen for seed gathering and canopy expansion matrix.`;
+    } else if (type === 'tallow') {
+      box.innerHTML = `
+<span class="tag-invasive">&#9888; CLASS A NOXIOUS INVASIVE</span>
+<strong>Botanical Taxonomy:</strong> Triadica sebifera (Chinese Tallow)
+<strong>Confidence Score:</strong> 99.1%
+<strong>Ecological Threat:</strong> Alters native soil chemistry via toxic leaf tannins; outcompetes native hickory, cherry, and oak.
+<strong>Water Consumption Drain:</strong> Excessive transpiration depletion along retention swales.
+<strong>Field Directive:</strong> ERADICATE & BIOCONVERT. Girdle or fell specimen. Chip biomass for Jean Pain aerobic compost heating loops or retort into biochar.`;
+    } else if (type === 'kudzu') {
+      box.innerHTML = `
+<span class="tag-invasive">&#9888; PROLIFIC INVASIVE VINE</span>
+<strong>Botanical Taxonomy:</strong> Pueraria montana var. lobata
+<strong>Confidence Score:</strong> 97.8%
+<strong>Ecological Threat:</strong> Smothers native juvenile trees; creates mono-crop canopy blockage.
+<strong>Field Directive:</strong> INTENSIVE REMEDIATION. Deploy targeted goat grazing rotation followed by Lance Beem deep microbial subsoil pulse to digest subterranean crown root stock.`;
+    }
+  }
+
+  // LINGO FOR A GRINGO
+  function setTranslatorInput(text) {
+    document.getElementById('raw-notes').value = text;
+  }
+
+  function translateDialect() {
+    const input = document.getElementById('raw-notes').value.trim();
+    const output = document.getElementById('translator-output');
+    if (!input) {
+      alert('Please enter or select a field note to translate.');
+      return;
     }
 
-    function triggerBioremediation() {
-      document.getElementById('som-val').innerText = '5.0%';
-      addLog('Bioremediation injection initiated. Microbial respiration rising.');
-    }
+    output.style.display = 'block';
 
-    function cycleHydrology() {
-      document.getElementById('water-val').innerText = '43,150 gal';
-      addLog('Hydrology manifold balanced. Recirculation cycle active across 10 wellheads.');
+    if (input.includes('Lance') || input.includes('brew')) {
+      output.innerText = 
+`[AGENCY REGULATORY TRANSLATION — NRCS CODE 336 (SOIL CARBON AMENDMENT)]
+"Deployment of high-potency indigenous microbial inoculant and bio-catalytic organic compost tea across target sectors to accelerate fungal-to-bacterial ratio rebalancing, remediate legacy chemical compaction, and stimulate active humus layer aggregation at an annualized rate exceeding 6% SOM enhancement."`;
+    } else if (input.includes('tallow') || input.includes('biochar')) {
+      output.innerText = 
+`[AGENCY REGULATORY TRANSLATION — NRCS CODE 314 & 384 (BRUSH MANAGEMENT & WOODY RESIDUE)]
+"Systematic mechanical removal of Category 1 non-indigenous arboreal biomass (Triadica sebifera) with subsequent pyrolytic bioconversion into fixed recalcitrant biochar substrate, functioning as a high-surface-area soil amendment and thermal mass input for closed-loop agricultural facilities."`;
+    } else {
+      output.innerText = 
+`[AGENCY REGULATORY TRANSLATION — NRCS PRACTICE CODE 580 (STREAMBANK & SHORELINE PROTECTION / CONTOUR BIOSWALES)]
+"Engineering of continuous keyhole swale hydrology on true topographical contour lines, augmented with hugelkultur woody biomass substrates to eliminate storm-event sedimentation runoff, recharge subterranean groundwater aquifers, and establish baseline bio-retention holding capacity."`;
     }
+  }
 
-    function pingNodes() {
-      addLog('High Tunnel 24x96 Node pinged: Hydronic thermal balance 21.6°C. Bus voltage 74.2V.');
-    }
-  </script>
+  // GRANT GENERATOR
+  function generateGrant() {
+    const prog = document.getElementById('grant-program').value;
+    const output = document.getElementById('grant-output');
+    output.style.display = 'block';
+
+    output.innerText = 
+`FEDERAL INFRASTRUCTURE PROJECT NARRATIVE
+PROGRAM TARGET: ${prog}
+APPLICANT ENTITY: The Stewardship Circle Field Hub
+LOCATION BENCHMARK: Hammond, LA / Subtropical Zone 8b-9a
+PROJECT DESIGNATION: Autonomous Watershed & Subsoil Humus Restoration Corridor
+
+I. EXECUTIVE STATEMENT
+The applicant requests operational co-funding for field-validated, autonomous environmental reclamation. Deploying native perennial guilds, contour bioswales, and closed-loop hydronic heating infrastructure, this initiative restores distressed acreage while logging real-time telemetry into federal reporting matrices.
+
+II. TELEMETRY QUANTIFICATION (REAL-TIME ASSET AUDIT)
+• Current Soil Organic Matter (SOM): 5.0% (Progressing toward 8.5% benchmark)
+• Bio-Retention Water Capacity: 43,150 Gallons actively managed across keyhole swales
+• Hydrology Infrastructure: 10-unit active wellhead manifold operating at 12.4 gpm
+• Facility Infrastructure: 24x96 ft Controlled High Tunnel with hydronic compost loop
+• Humus Absorption Benchmark: 1% increase in humus sequesters 20,000 gal/acre
+
+III. ECOLOGICAL REMEDIATION PROTOCOLS
+1. Bioremediation: High-potency biological soil inoculation (Lance Beem matrix) eliminates non-native compaction and raises mycelial respiration index to 91%.
+2. Invasive Eradication: Mechanical removal of Triadica sebifera with continuous bioconversion into agricultural biochar.
+3. Native Guild Canopy: Establishing Sassafras albidum, Carya illinoinensis (Pecan), and Prunus serotina (Black Cherry) food forest networks.
+
+IV. DRAWDOWN & COMPLIANCE VERIFICATION
+All field deployments are logged autonomously via field telemetry nodes and EPA API sync pipelines, providing immutable verification of conservation practice adherence.`;
+  }
+</script>
+
 </body>
 </html>
