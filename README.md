@@ -2,10 +2,9 @@
 
 **Shipaton 2026 Submission Document**  
 **Category Track:** Autonomous Systems & Environmental Infrastructure  
-**Live Production URL:** https://thestewardship.github.io/THEstewardship/
-**Theta Window:** [https://thestewardship.github.io/THEstewardship/theta.html](https://thestewardship.github.io/THEstewardship/theta.html)
-**Beta Access / Testing Gateway:** [https://lumalooper.com/testers.html](https://lumalooper.com/testers.html)
----
+* **Live Production URL:** https://thestewardship.github.io/THEstewardship/
+* **Theta Window:** https://thestewardship.github.io/THEstewardship/theta.html
+* **Beta Access / Testing Gateway:** https://lumalooper.com/testers.html
 
 ## Executive Overview
 The Stewardship Circle bridges internal cognitive coherence with real-world regenerative infrastructure. Traditional mobile wellness applications terminate at screen time and passive digital consumption; this ecosystem deliberately directs nervous-system alignment into measurable environmental restoration and decentralized field employment.
