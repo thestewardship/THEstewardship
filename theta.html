@@ -1,1 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Theta Window — 5.5 Hz Sensory Entrainment Chamber</title>
+  <style>
+    :root {
+      --bg: #07090e;
+      --card-bg: rgba(16, 24, 39, 0.75);
+      --border: rgba(99, 102, 241, 0.2);
+      --accent: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.4);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      overflow-x: hidden;
+    }
+    .container {
+      width: 100%;
+      max-width: 680px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px 32px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 40px var(--accent-glow);
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      padding: 6px 14px;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #a5b4fc;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    p.subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+    .orb-container {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      margin: 0 auto 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .orb-ring {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 2px dashed rgba(99, 102, 241, 0.3);
+      animation: rotateRing 30s linear infinite;
+    }
+    .orb-core {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #818cf8, #4338ca 60%, #1e1b4b);
+      box-shadow: 0 0 35px var(--accent-glow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .active .orb-core {
+      animation: thetaPulse 3.636s ease-in-out infinite;
+    }
+    @keyframes thetaPulse {
+      0%, 100% {
+        transform: scale(0.94);
+        box-shadow: 0 0 25px rgba(99, 102, 241, 0.3);
+      }
+      50% {
+        transform: scale(1.08);
+        box-shadow: 0 0 55px rgba(99, 102, 241, 0.7);
+      }
+    }
+    @keyframes rotateRing {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+    .btn-toggle {
+      background: #4f46e5;
+      color: #fff;
+      border: none;
+      padding: 16px 36px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.1s ease;
+      box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+    }
+    .btn-toggle:hover {
+      background: #4338ca;
+    }
+    .btn-toggle:active {
+      transform: scale(0.98);
+    }
+    .slider-group {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 12px 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .slider-group label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    input[type=range] {
+      flex: 1;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+    .telemetry-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .telemetry-card {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .telemetry-val {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #c7d2fe;
+    }
+    .telemetry-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="chamber">
+    <div class="badge">Sensory Floation State</div>
+    <h1>Theta Window</h1>
+    <p class="subtitle">5.5 Hz deep-coherence carrier frequency for nervous system de-escalation & autonomous synchronization.</p>
+    
+    <div class="orb-container">
+      <div class="orb-ring"></div>
+      <div class="orb-core"></div>
+    </div>
 
+    <div class="controls">
+      <button class="btn-toggle" id="toggleBtn" onclick="toggleAudio()">Engage Theta Carrier</button>
+      
+      <div class="slider-group">
+        <label for="volumeSlider">Volume</label>
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5" oninput="setVolume(this.value)">
+      </div>
+    </div>
+
+    <div class="telemetry-grid">
+      <div class="telemetry-card">
+        <div class="telemetry-val">5.50 Hz</div>
+        <div class="telemetry-label">Delta/Theta Pulse</div>
+      </div>
+      <div class="telemetry-card">
+        <div class="telemetry-val">216.0 Hz</div>
+        <div class="telemetry-label">Base Carrier (L)</div>
+      </div>
+      <div class="telemetry-card">
+        <div class="telemetry-val">221.5 Hz</div>
+        <div class="telemetry-label">Offset Carrier (R)</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let audioCtx = null;
+    let oscL = null;
+    let oscR = null;
+    let gainNode = null;
+    let isPlaying = false;
+
+    function initAudio() {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      
+      gainNode = audioCtx.createGain();
+      gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+
+      // Stereo merger for true binaural isolation
+      const merger = audioCtx.createChannelMerger(2);
+
+      // Left Channel: 216 Hz
+      oscL = audioCtx.createOscillator();
+      oscL.type = 'sine';
+      oscL.frequency.setValueAtTime(216.0, audioCtx.currentTime);
+      oscL.connect(merger, 0, 0);
+
+      // Right Channel: 221.5 Hz (5.5 Hz differential)
+      oscR = audioCtx.createOscillator();
+      oscR.type = 'sine';
+      oscR.frequency.setValueAtTime(221.5, audioCtx.currentTime);
+      oscR.connect(merger, 0, 1);
+
+      merger.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+
+      oscL.start();
+      oscR.start();
+    }
+
+    function toggleAudio() {
+      const chamber = document.getElementById('chamber');
+      const btn = document.getElementById('toggleBtn');
+
+      if (!isPlaying) {
+        if (!audioCtx) initAudio();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        chamber.classList.add('active');
+        btn.textContent = 'Disengage Theta Carrier';
+        btn.style.background = '#dc2626';
+        isPlaying = true;
+      } else {
+        if (audioCtx) audioCtx.suspend();
+        chamber.classList.remove('active');
+        btn.textContent = 'Engage Theta Carrier';
+        btn.style.background = '#4f46e5';
+        isPlaying = false;
+      }
+    }
+
+    function setVolume(val) {
+      if (gainNode && audioCtx) {
+        gainNode.gain.setValueAtTime(parseFloat(val), audioCtx.currentTime);
+      }
+    }
+  </script>
+</body>
+</html>
