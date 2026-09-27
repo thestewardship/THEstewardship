@@ -2,9 +2,9 @@
 
 **Shipaton 2026 Submission Document**  
 **Category Track:** Autonomous Systems & Environmental Infrastructure  
-**Live Production URL:** https://thestewardship.github.io  
-**Beta Access / Testing Gateway:** https://lumalooper.com/testers.html  
-
+**Live Production URL:** https://thestewardship.github.io/THEstewardship/
+**Theta Window:** [https://thestewardship.github.io/THEstewardship/theta.html](https://thestewardship.github.io/THEstewardship/theta.html)
+**Beta Access / Testing Gateway:** [https://lumalooper.com/testers.html](https://lumalooper.com/testers.html)
 ---
 
 ## Executive Overview
